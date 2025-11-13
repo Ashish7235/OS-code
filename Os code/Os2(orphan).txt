@@ -1,0 +1,19 @@
+int main() {
+    pid_t pid = fork();
+
+    if (pid < 0) {
+        perror("fork failed");
+        exit(EXIT_FAILURE);
+    }
+    else if (pid == 0) {
+        sleep(5);
+        printf("Child (PID %d) after sleep, new parent PID: %d\n", getpid(), getppid());
+        exit(0);
+    }
+    else {
+        printf("Parent (PID %d) exiting immediately\n", getpid());
+        exit(0);
+    }
+
+    return 0;
+}

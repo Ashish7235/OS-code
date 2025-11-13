@@ -1,0 +1,19 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+
+int main() {
+    char *args[] = {"/bin/ls", "-1", NULL};
+
+    printf("Before execve()\n");
+
+    if (execve("/bin/ls", args, NULL) == -1) {
+        perror("execve failed");
+        exit(EXIT_FAILURE);
+    }
+
+    // This line will not be printed if execve succeeds
+    printf("After execve()\n");
+
+    return 0;
+}

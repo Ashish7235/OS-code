@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+typedef struct {
+    int pid;        // process id
+    int at;         // arrival time
+    int bt;         // burst time
+    int rt;         // remaining time
+    bool completed; // process finished or not
+} p;
+
+void rr(p pr[], int n, int tq) {
+    int completed = 0;
+    int ct = 0;               // current time
+    int i = 0;                // index for iteration
+    int all_completed = 0;
+
+    printf("Round Robin Scheduling (time quantum = %d)\n", tq);
+
+    while (completed != n) {
+        all_completed = 1;
+        for (i = 0; i < n; i++) {
+            if (pr[i].at <= ct && !pr[i].completed) {
+                all_completed = 0;
+
+                // if process remaining time > time quantum
+                if (pr[i].rt > tq) {
+                    printf("Executing process %d from %d to %d\n", pr[i].pid, ct, ct + tq);
+                    ct += tq;
+                    pr[i].rt -= tq;
+                } 
+                // if process remaining time <= time quantum
+                else if (pr[i].rt > 0) {
+                    printf("Executing process %d from %d to %d\n", pr[i].pid, ct, ct + pr[i].rt);
+                    ct += pr[i].rt;
+                    pr[i].rt = 0;
+                    pr[i].completed = true;
+                    completed++;
+                    printf("Process %d completed at time %d\n", pr[i].pid, ct);
+                }
+            }
+        }
+
+        // if no process is ready yet, just increment time
+        if (all_completed == 1) {
+            printf("No process available at time %d\n", ct);
+            ct++;
+        }
+    }
+}
+
+int main(void) {
+    p pr[] = {
+        {1, 0, 5, 5, false},
+        {2, 1, 4, 4, false},
+        {3, 2, 2, 2, false}
+    };
+    int n = sizeof(pr) / sizeof(pr[0]);
+    int tq = 2; // time quantum
+    rr(pr, n, tq);
+    return 0;
+}

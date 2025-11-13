@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+typedef struct{
+    int pid;
+    int at;
+    int bt;
+    int rt;
+    bool completed;
+}p;
+int short_ind(p pr[],int n,int ct){
+    int shortest=-1;
+    int shortest_rem=999999;
+    for(int i=0;i<n;i++){
+        if(!pr[i].completed && pr[i].at<=ct&& pr[i].rt<shortest_rem && pr[i].rt>0){
+            shortest_rem=pr[i].rt;
+            shortest=i;
+        }
+    }
+    return shortest;
+}
+void sjf(p pr[],int n){
+    int completed=0;
+    int ct=0;
+    while(completed!=n){
+        int short_i= short_ind(pr,n,ct);
+        if(short_i==-1){
+            printf("no process available at %d \n",ct);
+            ct++;
+            continue;
+        }
+        printf("excuting process %d at time %d \n",pr[short_i].pid,ct);
+        pr[short_i].rt--;
+        ct++;
+        if(pr[short_i].rt==0){
+            printf("process %d completed at time %d\n " ,pr[short_i].pid,ct);
+            pr[short_i].completed=true;
+            completed++;
+            
+        }
+    }
+}
+int main(void){
+    p pr[]={
+        // 1, 0, 3, 3, false},
+        // {2, 2, 6, 6, false},
+        // {3, 4, 4, 4, false},
+        // {4, 6, 5, 5, false}
+        // {1,}
+        {1,0,3,3,false},
+        {2,0,6,6,false},
+        {3,4,4,4,false},
+        {4,6,5,5,false}
+    };
+    int n=sizeof(pr)/sizeof(pr[0]);
+    printf("Shortest job first (preemptive)\n");
+    sjf(pr,n);
+    return 0;
+}

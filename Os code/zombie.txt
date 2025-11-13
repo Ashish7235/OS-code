@@ -1,0 +1,23 @@
+zombie
+#include <stdio.h>
+#include <unistd.h>
+
+int main() {
+    pid_t pid = fork();
+
+    if (pid < 0) {
+        perror("fork failed");
+        return 1;
+    }
+    else if (pid == 0) {
+        printf("Child (PID %d) exiting immediately\n", getpid());
+        _exit(0);  
+    }
+    else {
+        printf("Parent (PID %d) sleeping for 10 seconds...\n", getpid());
+        sleep(10);  
+        printf("Parent exiting\n");
+    }
+
+    return 0;
+}

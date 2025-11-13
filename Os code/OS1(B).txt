@@ -1,0 +1,52 @@
+FILE="addressbook.txt"
+ while true
+ do
+    echo "1. Create Address Book"
+   echo "2. View Address Book"
+   echo "3. Insert Record"
+   echo "4. Delete Record"
+   echo "5. Modify Record"
+   echo "6. Exit"
+   read -p "Enter your choice: " ch
+   case $ch in
+       1)
+           >
+ $FILE
+           echo "Address book created"
+           ;;
+       2)
+       3)
+       4)
+       5)
+       6)
+       *)
+   esac
+ done
+           if [ -s $FILE ]; then
+               cat $FILE
+           else
+               echo "Address book is empty."
+           fi
+           ;;
+           read -p "Enter Name: " name
+           read -p "Enter Phone: " phone
+           read -p "Enter Email: " email
+           echo "$name | $phone | $email" >> $FILE
+           echo "Record inserted."
+           ;;
+           read -p "Enter Name to delete: " name
+           grep -v "^$name" $FILE > temp && mv temp $FILE
+           echo "Record deleted "
+           ;;
+           read -p "Enter Name to modify: " name
+           grep -v "^$name" $FILE > temp
+           read -p "Enter New Phone: " phone
+           read -p "Enter New Email: " email
+           echo "$name | $phone | $email" >> temp
+           mv temp $FILE
+           echo "Record modified "
+           ;;
+           echo "Exit"
+           break
+           ;;
+           echo "Invalid choice.
